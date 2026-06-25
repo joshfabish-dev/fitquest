@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#102a43" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FitQuest" />
+
+  <title>FitQuest</title>
+
+<link rel="manifest" href="manifest.json" />
+
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --ink: #14213d;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --blue: #2563eb;
+      --green: #16a34a;
+      --orange: #f97316;
+      --purple: #7c3aed;
+      --red: #dc2626;
+      --gold: #facc15;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+      --radius: 22px;
+      --safe-bottom: env(safe-area-inset-bottom);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      padding-bottom: calc(86px + var(--safe-bottom));
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Loading screen */
+
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.28), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(22, 163, 74, 0.28), transparent 35%),
+        linear-gradient(145deg, #0f172a, #102a43 55%, #0b1220);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    #loadingScreen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-card {
+      width: min(420px, 100%);
+      text-align: center;
+    }
+
+    .loading-logo {
+      width: 98px;
+      height: 98px;
+      margin: 0 auto 20px;
+      border-radius: 30px;
+      background: linear-gradient(145deg, #22c55e, #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 46px;
+      font-weight: 900;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .loading-title {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
+    }
+
+    .loading-subtitle {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 16px;
+      margin-bottom: 62px;
+    }
+
+    .loading-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.86);
+      margin-bottom: 10px;
+    }
+
+    .loading-bar-track {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #38bdf8, #a78bfa);
+      animation: loadBar 2.5s ease forwards;
+    }
+
+    @keyframes loadBar {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    /* Header */
+
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: calc(14px + env(safe-area-inset-top)) 16px 14px;
+      background: rgba(244, 247, 251, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(219, 227, 239, 0.8);
+    }
+
+    .header-row {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #22c55e, #2563eb);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 22px;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.25);
+      flex: 0 0 auto;
+    }
+
+    .header-title {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .header-title h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .header-title p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .profile-select {
+      max-width: 150px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: white;
+      padding: 0 10px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* Main */
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .screen {
+      display: none;
+      animation: in 0.18s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes in {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .card.soft {
+      box-shadow: none;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 19px;
+      letter-spacing: -0.03em;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 520px) {
+      .grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .header-row {
+        align-items: flex-start;
+      }
+
+      .profile-select {
+        max-width: 125px;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #f8fafc;
+      padding: 13px 14px;
+      outline: none;
+      color: var(--ink);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(37, 99, 235, 0.65);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+      background: white;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 16px;
+      font-weight: 900;
+      color: white;
+      background: var(--blue);
+      min-height: 48px;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn.green {
+      background: var(--green);
+      box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    }
+
+    .btn.orange {
+      background: var(--orange);
+      box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
+    }
+
+    .btn.purple {
+      background: var(--purple);
+      box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
+    }
+
+    .btn.danger {
+      background: var(--red);
+      box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
+    }
+
+    .btn.secondary {
+      background: #e2e8f0;
+      color: #1e293b;
+      box-shadow: none;
+    }
+
+    .btn.full {
+      width: 100%;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 7px 10px;
+    }
+
+    .pill.green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .pill.orange {
+      background: #ffedd5;
+      color: #9a3412;
+    }
+
+    .pill.blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .hero-card {
+      background:
+        radial-gradient(circle at top right, rgba(250, 204, 21, 0.35), transparent 28%),
+        linear-gradient(145deg, #102a43, #1e3a8a);
+      color: white;
+      border: 0;
+      overflow: hidden;
+    }
+
+    .hero-card .subtle {
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .hero-score {
+      font-size: 48px;
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      margin: 8px 0;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 620px) {
+      .stat-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-label {
+      margin-top: 3px;
+      color: var(--muted);
+      font-weight: 750;
+      font-size: 12px;
+    }
+
+    .progress-wrap {
+      margin-top: 10px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 850;
+      color: #334155;
+      margin-bottom: 7px;
+      gap: 12px;
+    }
+
+    .progress-track {
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #2563eb);
+      transition: width 0.25s ease;
+    }
+
+    .activity-item,
+    .exercise-item,
+    .profile-item,
+    .achievement-item {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 13px;
+    }
+
+    .activity-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .activity-name {
+      font-weight: 950;
+      letter-spacing: -0.02em;
+    }
+
+    .activity-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+
+    .score-chip {
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 950;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .mini-delete {
+      border: 0;
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 12px;
+      padding: 8px 9px;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .exercise-builder {
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    .achievement-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .achievement-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .achievement-item {
+      min-height: 118px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .achievement-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #facc15, #f97316);
+      color: #422006;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 950;
+      font-size: 20px;
+      margin-bottom: 9px;
+    }
+
+    .achievement-title {
+      font-weight: 950;
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .achievement-desc {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+      line-height: 1.25;
+    }
+
+    .achievement-item.locked {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    .inline-note {
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .bottom-tabs {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      padding: 10px 14px calc(10px + var(--safe-bottom));
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid rgba(219, 227, 239, 0.95);
+    }
+
+    .tabs-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+
+    .tab-btn {
+      border: 0;
+      border-radius: 18px;
+      background: #f1f5f9;
+      color: #475569;
+      min-height: 58px;
+      font-weight: 950;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .tab-btn span:first-child {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .tab-btn span:last-child {
+      font-size: 12px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(145deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+    }
+
+    .toast {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: calc(96px + var(--safe-bottom));
+      z-index: 2000;
+      max-width: 720px;
+      margin: 0 auto;
+      background: #0f172a;
+      color: white;
+      border-radius: 16px;
+      padding: 13px 15px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.28);
+      font-weight: 800;
+      display: none;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastIn 0.18s ease;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 22px 10px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .danger-zone {
+      border-color: #fecaca;
+      background: #fff7f7;
+    }
+
+    .file-input {
+      background: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingScreen">
+    <div class="loading-card">
+      <div class="loading-logo">FQ</div>
+      <div class="loading-title">FitQuest</div>
+      <div class="loading-subtitle">Track training. Earn points. Level up.</div>
+
+      <div class="loading-text">Loading fitness quest...</div>
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="header-row">
+        <div class="app-mark">FQ</div>
+        <div class="header-title">
+          <h1>FitQuest</h1>
+          <p id="headerSubtitle">Ready for today’s training?</p>
+        </div>
+        <select id="profileSelect" class="profile-select" aria-label="Select profile"></select>
+      </div>
+    </header>
+
+    <main>
+      <section id="trackScreen" class="screen active">
+        <div class="card hero-card">
+          <div class="subtle">Today’s Quest</div>
+          <div class="hero-score" id="todayPoints">0</div>
+          <div class="subtle">points earned today</div>
+          <div class="pill-row" style="margin-top: 14px;">
+            <span class="pill green" id="streakPill">0 day streak</span>
+            <span class="pill blue" id="weeklyPill">0 weekly pts</span>
+            <span class="pill orange" id="levelPill">Level 1</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Log an Activity</h2>
+
+          <div class="grid two">
+            <div>
+              <label for="activityDate">Date</label>
+              <input id="activityDate" type="date" />
+            </div>
+
+            <div>
+              <label for="activityType">Activity Type</label>
+              <select id="activityType">
+                <option>Home Workout</option>
+                <option>Gym Workout</option>
+                <option>Running</option>
+                <option>Outdoor Fitness</option>
+                <option>Soccer Supplemental</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top: 12px;">
+            <div>
+              <label for="duration">Duration, minutes</label>
+              <input id="duration" type="number" inputmode="numeric" min="1" placeholder="30" />
+            </div>
+
+            <div>
+              <label for="intensity">Intensity</label>
+              <select id="intensity">
+                <option>Easy</option>
+                <option selected>Moderate</option>
+                <option>Hard</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top: 12px;">
+            <div>
+              <label for="effort">Effort Score, 1-5</label>
+              <select id="effort">
+                <option value="1">1 - Low</option>
+                <option value="2">2 - Steady</option>
+                <option value="3" selected>3 - Good</option>
+                <option value="4">4 - Strong</option>
+                <option value="5">5 - Excellent</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="focusArea">Focus Area</label>
+              <select id="focusArea"></select>
+            </div>
+          </div>
+
+          <div id="runningFields" class="grid two hidden" style="margin-top: 12px;">
+            <div>
+              <label for="distanceMiles">Distance, miles</label>
+              <input id="distanceMiles" type="number" inputmode="decimal" step="0.01" min="0" placeholder="2.5" />
+            </div>
+
+            <div>
+              <label for="routeType">Route Type</label>
+              <select id="routeType">
+                <option>Neighborhood</option>
+                <option>Track</option>
+                <option>Trail</option>
+                <option>Treadmill</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="soccerFields" class="grid two hidden" style="margin-top: 12px;">
+            <div>
+              <label for="ballTouches">Ball Touches</label>
+              <input id="ballTouches" type="number" inputmode="numeric" min="0" placeholder="250" />
+            </div>
+
+            <div>
+              <label for="soccerMinutes">Technical Minutes</label>
+              <input id="soccerMinutes" type="number" inputmode="numeric" min="0" placeholder="20" />
+            </div>
+          </div>
+
+          <div id="exerciseSection" style="margin-top: 14px;">
+            <label>Exercise Details</label>
+            <div class="exercise-builder">
+              <div class="grid two">
+                <div>
+                  <input id="exerciseName" type="text" placeholder="Exercise name" />
+                </div>
+                <div>
+                  <input id="exerciseWeight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="Weight, optional" />
+                </div>
+              </div>
+
+              <div class="grid two" style="margin-top: 10px;">
+                <div>
+                  <input id="exerciseSets" type="number" inputmode="numeric" min="1" placeholder="Sets" />
+                </div>
+                <div>
+                  <input id="exerciseReps" type="number" inputmode="numeric" min="1" placeholder="Reps" />
+                </div>
+              </div>
+
+              <div class="button-row" style="margin-top: 10px;">
+                <button class="btn secondary" id="addExerciseBtn" type="button">Add Exercise</button>
+              </div>
+
+              <div id="exerciseList" class="grid" style="margin-top: 12px;"></div>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <label for="notes">Notes</label>
+            <textarea id="notes" placeholder="How did it feel? What did you work on?"></textarea>
+          </div>
+
+          <div class="inline-note" style="margin-top: 12px;">
+            Estimated score: <span id="estimatedPoints">0</span> points
+          </div>
+
+          <div class="button-row" style="margin-top: 14px;">
+            <button class="btn green full" id="saveActivityBtn">Save Activity</button>
+            <button class="btn secondary full" id="clearFormBtn">Clear Form</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Recent Activities</h2>
+          <div id="recentActivities" class="grid"></div>
+        </div>
+      </section>
+
+      <section id="statsScreen" class="screen">
+        <div class="card hero-card">
+          <div class="subtle">Total Quest Score</div>
+          <div class="hero-score" id="totalPoints">0</div>
+          <div class="subtle" id="levelSummary">Level 1 Athlete</div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Stats</h2>
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="statActivities">0</div>
+              <div class="stat-label">Activities</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="statMinutes">0</div>
+              <div class="stat-label">Minutes</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="statMiles">0</div>
+              <div class="stat-label">Miles</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="statTouches">0</div>
+              <div class="stat-label">Touches</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Weekly Goals</h2>
+
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>Points</span>
+              <span id="goalPointsText">0 / 250</span>
+            </div>
+            <div class="progress-track">
+              <div id="goalPointsFill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>Minutes</span>
+              <span id="goalMinutesText">0 / 180</span>
+            </div>
+            <div class="progress-track">
+              <div id="goalMinutesFill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>Soccer Sessions</span>
+              <span id="goalSoccerText">0 / 3</span>
+            </div>
+            <div class="progress-track">
+              <div id="goalSoccerFill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>Running Miles</span>
+              <span id="goalMilesText">0 / 5</span>
+            </div>
+            <div class="progress-track">
+              <div id="goalMilesFill" class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Achievements</h2>
+          <div id="achievementGrid" class="achievement-grid"></div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Activity Breakdown</h2>
+          <div id="activityBreakdown" class="grid"></div>
+        </div>
+      </section>
+
+      <section id="settingsScreen" class="screen">
+        <div class="card">
+          <h2 class="section-title">Profiles</h2>
+          <p class="subtle">
+            Each profile has its own goals, activities, points, and achievements on this device.
+          </p>
+
+          <div class="grid two" style="margin-top: 12px;">
+            <div>
+              <label for="newProfileName">New Profile Name</label>
+              <input id="newProfileName" type="text" placeholder="Kid name" />
+            </div>
+            <div style="align-self: end;">
+              <button id="addProfileBtn" class="btn full">Add Profile</button>
+            </div>
+          </div>
+
+          <div id="profileList" class="grid" style="margin-top: 14px;"></div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Goal Settings</h2>
+
+          <div class="grid two">
+            <div>
+              <label for="goalWeeklyPoints">Weekly Points</label>
+              <input id="goalWeeklyPoints" type="number" inputmode="numeric" min="0" />
+            </div>
+            <div>
+              <label for="goalWeeklyMinutes">Weekly Minutes</label>
+              <input id="goalWeeklyMinutes" type="number" inputmode="numeric" min="0" />
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top: 12px;">
+            <div>
+              <label for="goalWeeklySoccer">Soccer Sessions</label>
+              <input id="goalWeeklySoccer" type="number" inputmode="numeric" min="0" />
+            </div>
+            <div>
+              <label for="goalWeeklyMiles">Running Miles</label>
+              <input id="goalWeeklyMiles" type="number" inputmode="decimal" step="0.1" min="0" />
+            </div>
+          </div>
+
+          <div class="button-row" style="margin-top: 14px;">
+            <button id="saveGoalsBtn" class="btn green full">Save Goals</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Backup and Restore</h2>
+          <p class="subtle">
+            FitQuest data is stored on this device. Export backups regularly, especially before app changes.
+          </p>
+
+          <div class="button-row" style="margin-top: 14px;">
+            <button id="exportBtn" class="btn purple full">Export Backup</button>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <label for="importFile">Restore Backup File</label>
+            <input id="importFile" class="file-input" type="file" accept="application/json,.json" />
+          </div>
+
+          <div class="button-row" style="margin-top: 14px;">
+            <button id="importBtn" class="btn orange full">Import Backup</button>
+          </div>
+
+          <div class="inline-note" style="margin-top: 12px;">
+            Last saved: <span id="lastSavedText">Not saved yet</span>
+          </div>
+        </div>
+
+        <div class="card danger-zone">
+          <h2 class="section-title">Danger Zone</h2>
+          <p class="subtle">
+            This only clears FitQuest data from this browser/device.
+          </p>
+          <button id="resetAppBtn" class="btn danger full">Reset FitQuest Data</button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-tabs" aria-label="Main navigation">
+      <div class="tabs-inner">
+        <button class="tab-btn active" data-screen="trackScreen">
+          <span>＋</span>
+          <span>Track</span>
+        </button>
+        <button class="tab-btn" data-screen="statsScreen">
+          <span>★</span>
+          <span>Stats</span>
+        </button>
+        <button class="tab-btn" data-screen="settingsScreen">
+          <span>⚙</span>
+          <span>Settings</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const STORAGE_KEY = "fitquest.v1.data";
+const POINTS_PER_LEVEL = 250;
 
 const DEFAULT_GOALS = {
   weeklyPoints: 250,
@@ -37,6 +38,53 @@ const SOCCER_FOCUS_AREAS = [
   "Conditioning"
 ];
 
+const ACTIVITY_MILESTONE_CONFIG = [
+  {
+    type: "Home Workout",
+    label: "Home Workout",
+    shortLabel: "Home",
+    icon: "HW"
+  },
+  {
+    type: "Gym Workout",
+    label: "Gym Workout",
+    shortLabel: "Gym",
+    icon: "GW"
+  },
+  {
+    type: "Running",
+    label: "Run",
+    shortLabel: "Run",
+    icon: "R"
+  },
+  {
+    type: "Outdoor Fitness",
+    label: "Outdoor Fitness",
+    shortLabel: "Outdoor",
+    icon: "OF"
+  },
+  {
+    type: "Soccer Supplemental",
+    label: "Soccer Supplemental Session",
+    shortLabel: "Soccer",
+    icon: "S"
+  }
+];
+
+const ACTIVITY_MILESTONE_COUNTS = [25, 50, 100];
+
+const ACTIVITY_MILESTONE_ACHIEVEMENTS = ACTIVITY_MILESTONE_CONFIG.flatMap(config => {
+  return ACTIVITY_MILESTONE_COUNTS.map(count => {
+    return {
+      id: `${slugify(config.type)}_${count}`,
+      title: `${count} ${config.shortLabel}`,
+      desc: `Complete ${count} ${config.label.toLowerCase()}${count === 1 ? "" : "s"}.`,
+      icon: String(count),
+      test: stats => (stats.activityTypeCounts[config.type] || 0) >= count
+    };
+  });
+});
+
 const ACHIEVEMENTS = [
   {
     id: "first_activity",
@@ -60,26 +108,128 @@ const ACHIEVEMENTS = [
     test: stats => stats.streak >= 7
   },
   {
+    id: "fourteen_day_streak",
+    title: "14-Day Streak",
+    desc: "Train 14 days in a row.",
+    icon: "14",
+    test: stats => stats.streak >= 14
+  },
+  {
+    id: "thirty_day_streak",
+    title: "30-Day Streak",
+    desc: "Train 30 days in a row.",
+    icon: "30",
+    test: stats => stats.streak >= 30
+  },
+
+  {
+    id: "one_active_week",
+    title: "First Training Week",
+    desc: "Log activity in your first training week.",
+    icon: "W1",
+    test: stats => stats.activeWeeks >= 1
+  },
+  {
+    id: "four_active_weeks",
+    title: "4 Active Weeks",
+    desc: "Log activity across 4 different weeks.",
+    icon: "W4",
+    test: stats => stats.activeWeeks >= 4
+  },
+  {
+    id: "eight_active_weeks",
+    title: "8 Active Weeks",
+    desc: "Log activity across 8 different weeks.",
+    icon: "W8",
+    test: stats => stats.activeWeeks >= 8
+  },
+  {
+    id: "twelve_active_weeks",
+    title: "12 Active Weeks",
+    desc: "Log activity across 12 different weeks.",
+    icon: "W12",
+    test: stats => stats.activeWeeks >= 12
+  },
+  {
+    id: "twenty_six_active_weeks",
+    title: "26 Active Weeks",
+    desc: "Log activity across 26 different weeks.",
+    icon: "W26",
+    test: stats => stats.activeWeeks >= 26
+  },
+
+  {
+    id: "one_active_month",
+    title: "First Training Month",
+    desc: "Log activity in your first training month.",
+    icon: "M1",
+    test: stats => stats.activeMonths >= 1
+  },
+  {
+    id: "three_active_months",
+    title: "3 Active Months",
+    desc: "Log activity across 3 different months.",
+    icon: "M3",
+    test: stats => stats.activeMonths >= 3
+  },
+  {
+    id: "six_active_months",
+    title: "6 Active Months",
+    desc: "Log activity across 6 different months.",
+    icon: "M6",
+    test: stats => stats.activeMonths >= 6
+  },
+  {
+    id: "twelve_active_months",
+    title: "12 Active Months",
+    desc: "Log activity across 12 different months.",
+    icon: "M12",
+    test: stats => stats.activeMonths >= 12
+  },
+
+  {
     id: "hundred_points",
     title: "100 Points",
     desc: "Earn 100 total points.",
-    icon: "★",
+    icon: "100",
     test: stats => stats.totalPoints >= 100
   },
   {
     id: "five_hundred_points",
     title: "500 Points",
     desc: "Earn 500 total points.",
-    icon: "★",
+    icon: "500",
     test: stats => stats.totalPoints >= 500
   },
   {
     id: "thousand_points",
     title: "1,000 Points",
     desc: "Earn 1,000 total points.",
-    icon: "★",
+    icon: "1K",
     test: stats => stats.totalPoints >= 1000
   },
+  {
+    id: "twenty_five_hundred_points",
+    title: "2,500 Points",
+    desc: "Earn 2,500 total points.",
+    icon: "2.5K",
+    test: stats => stats.totalPoints >= 2500
+  },
+  {
+    id: "five_thousand_points",
+    title: "5,000 Points",
+    desc: "Earn 5,000 total points.",
+    icon: "5K",
+    test: stats => stats.totalPoints >= 5000
+  },
+  {
+    id: "ten_thousand_points",
+    title: "10,000 Points",
+    desc: "Earn 10,000 total points.",
+    icon: "10K",
+    test: stats => stats.totalPoints >= 10000
+  },
+
   {
     id: "ten_activities",
     title: "10 Activities",
@@ -94,6 +244,21 @@ const ACHIEVEMENTS = [
     icon: "30",
     test: stats => stats.totalActivities >= 30
   },
+  {
+    id: "fifty_activities",
+    title: "50 Activities",
+    desc: "Complete 50 activities.",
+    icon: "50",
+    test: stats => stats.totalActivities >= 50
+  },
+  {
+    id: "hundred_activities",
+    title: "100 Activities",
+    desc: "Complete 100 activities.",
+    icon: "100",
+    test: stats => stats.totalActivities >= 100
+  },
+
   {
     id: "first_run",
     title: "First Run",
@@ -116,18 +281,26 @@ const ACHIEVEMENTS = [
     test: stats => stats.totalMiles >= 25
   },
   {
+    id: "fifty_miles",
+    title: "50 Miles",
+    desc: "Run 50 total miles.",
+    icon: "50",
+    test: stats => stats.totalMiles >= 50
+  },
+  {
+    id: "hundred_miles",
+    title: "100 Miles",
+    desc: "Run 100 total miles.",
+    icon: "100",
+    test: stats => stats.totalMiles >= 100
+  },
+
+  {
     id: "first_soccer",
     title: "First Soccer Session",
     desc: "Log a soccer supplemental session.",
     icon: "S",
     test: stats => stats.soccerCount >= 1
-  },
-  {
-    id: "ten_soccer",
-    title: "10 Soccer Sessions",
-    desc: "Complete 10 soccer sessions.",
-    icon: "10",
-    test: stats => stats.soccerCount >= 10
   },
   {
     id: "thousand_touches",
@@ -136,6 +309,21 @@ const ACHIEVEMENTS = [
     icon: "1K",
     test: stats => stats.totalTouches >= 1000
   },
+  {
+    id: "five_thousand_touches",
+    title: "5,000 Touches",
+    desc: "Record 5,000 ball touches.",
+    icon: "5K",
+    test: stats => stats.totalTouches >= 5000
+  },
+  {
+    id: "ten_thousand_touches",
+    title: "10,000 Touches",
+    desc: "Record 10,000 ball touches.",
+    icon: "10K",
+    test: stats => stats.totalTouches >= 10000
+  },
+
   {
     id: "workout_warrior",
     title: "Workout Warrior",
@@ -151,6 +339,13 @@ const ACHIEVEMENTS = [
     test: stats => stats.totalMinutes >= 500
   },
   {
+    id: "one_thousand_minutes",
+    title: "1,000 Minutes",
+    desc: "Train for 1,000 total minutes.",
+    icon: "1K",
+    test: stats => stats.totalMinutes >= 1000
+  },
+  {
     id: "hard_worker",
     title: "Hard Worker",
     desc: "Complete 5 hard-intensity sessions.",
@@ -163,7 +358,9 @@ const ACHIEVEMENTS = [
     desc: "Log 10 exercises inside workouts.",
     icon: "D",
     test: stats => stats.totalExercises >= 10
-  }
+  },
+
+  ...ACTIVITY_MILESTONE_ACHIEVEMENTS
 ];
 
 let state = null;
@@ -393,6 +590,7 @@ function renderExerciseList() {
 
 function saveActivity() {
   const profile = getActiveProfile();
+  const unlockedBefore = new Set(getUnlockedAchievementIds(profile));
 
   const date = document.getElementById("activityDate").value;
   const type = document.getElementById("activityType").value;
@@ -438,10 +636,17 @@ function saveActivity() {
   profile.activities.push(activity);
   saveState();
 
+  const unlockedAfter = getUnlockedAchievements(profile);
+  const newlyUnlocked = unlockedAfter.filter(achievement => !unlockedBefore.has(achievement.id));
+
   clearForm(false);
   renderAll();
 
   showToast(`Saved ${activity.type}: ${activity.points} points earned.`);
+
+  if (newlyUnlocked.length) {
+    showAchievementPopup(newlyUnlocked[0], newlyUnlocked.length);
+  }
 }
 
 function clearForm(showMessage) {
@@ -722,11 +927,22 @@ function renderHeader() {
 function renderHero() {
   const profile = getActiveProfile();
   const stats = calculateStats(profile);
+  const levelInfo = getLevelInfo(stats.totalPoints);
 
   document.getElementById("todayPoints").textContent = stats.todayPoints;
   document.getElementById("streakPill").textContent = `${stats.streak} day streak`;
   document.getElementById("weeklyPill").textContent = `${stats.weeklyPoints} weekly pts`;
-  document.getElementById("levelPill").textContent = `Level ${stats.level}`;
+  document.getElementById("levelPill").textContent = `Level ${levelInfo.level}`;
+
+  const progressText = document.getElementById("heroLevelProgressText");
+  const nextLevelText = document.getElementById("heroNextLevelText");
+  const progressFill = document.getElementById("heroLevelProgressFill");
+
+  if (progressText && nextLevelText && progressFill) {
+    progressText.textContent = `${levelInfo.currentLevelPoints} / ${POINTS_PER_LEVEL} XP`;
+    nextLevelText.textContent = `Next: Level ${levelInfo.nextLevel}`;
+    progressFill.style.width = `${levelInfo.percent}%`;
+  }
 }
 
 function renderRecentActivities() {
@@ -790,13 +1006,24 @@ function renderStats() {
   const profile = getActiveProfile();
   const stats = calculateStats(profile);
   const goals = profile.goals || DEFAULT_GOALS;
+  const levelInfo = getLevelInfo(stats.totalPoints);
 
   document.getElementById("totalPoints").textContent = stats.totalPoints;
-  document.getElementById("levelSummary").textContent = `Level ${stats.level} Athlete`;
+  document.getElementById("levelSummary").textContent = `Level ${levelInfo.level} Athlete`;
   document.getElementById("statActivities").textContent = stats.totalActivities;
   document.getElementById("statMinutes").textContent = stats.totalMinutes;
   document.getElementById("statMiles").textContent = roundOne(stats.totalMiles);
   document.getElementById("statTouches").textContent = stats.totalTouches;
+
+  const statsProgressText = document.getElementById("statsLevelProgressText");
+  const statsNextLevelText = document.getElementById("statsNextLevelText");
+  const statsProgressFill = document.getElementById("statsLevelProgressFill");
+
+  if (statsProgressText && statsNextLevelText && statsProgressFill) {
+    statsProgressText.textContent = `${levelInfo.currentLevelPoints} / ${POINTS_PER_LEVEL} XP`;
+    statsNextLevelText.textContent = `Next: Level ${levelInfo.nextLevel}`;
+    statsProgressFill.style.width = `${levelInfo.percent}%`;
+  }
 
   setProgress("goalPoints", stats.weeklyPoints, goals.weeklyPoints);
   setProgress("goalMinutes", stats.weeklyMinutes, goals.weeklyMinutes);
@@ -950,7 +1177,29 @@ function calculateStats(profile) {
   }).length;
 
   const hardSessions = activities.filter(activity => activity.intensity === "Hard").length;
-  const streak = calculateStreak(activities);
+
+    const activityTypeCounts = {
+    "Home Workout": activities.filter(activity => activity.type === "Home Workout").length,
+    "Gym Workout": activities.filter(activity => activity.type === "Gym Workout").length,
+    "Running": activities.filter(activity => activity.type === "Running").length,
+    "Outdoor Fitness": activities.filter(activity => activity.type === "Outdoor Fitness").length,
+    "Soccer Supplemental": activities.filter(activity => activity.type === "Soccer Supplemental").length
+    };
+
+    const activeWeekKeys = new Set();
+    const activeMonthKeys = new Set();
+
+    activities.forEach(activity => {
+    if (!activity.date) return;
+
+    activeWeekKeys.add(getWeekKey(activity.date));
+    activeMonthKeys.add(activity.date.slice(0, 7));
+    });
+
+    const activeWeeks = activeWeekKeys.size;
+    const activeMonths = activeMonthKeys.size;
+
+    const streak = calculateStreak(activities);
 
   return {
     totalPoints,
@@ -968,13 +1217,16 @@ function calculateStats(profile) {
     soccerCount,
     workoutCount,
     hardSessions,
+    activityTypeCounts,
+    activeWeeks,
+    activeMonths,
     streak,
     level: calculateLevel(totalPoints)
   };
 }
 
 function calculateLevel(totalPoints) {
-  return Math.max(1, Math.floor(totalPoints / 250) + 1);
+  return Math.max(1, Math.floor(totalPoints / POINTS_PER_LEVEL) + 1);
 }
 
 function calculateStreak(activities) {
@@ -1075,6 +1327,72 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function getLevelInfo(totalPoints) {
+  const points = toNumber(totalPoints);
+  const level = Math.floor(points / POINTS_PER_LEVEL) + 1;
+  const currentLevelPoints = points % POINTS_PER_LEVEL;
+  const nextLevel = level + 1;
+  const percent = Math.min((currentLevelPoints / POINTS_PER_LEVEL) * 100, 100);
+
+  return {
+    level,
+    nextLevel,
+    currentLevelPoints,
+    percent
+  };
+}
+
+function getUnlockedAchievements(profile) {
+  const stats = calculateStats(profile);
+  return ACHIEVEMENTS.filter(achievement => achievement.test(stats));
+}
+
+function getUnlockedAchievementIds(profile) {
+  return getUnlockedAchievements(profile).map(achievement => achievement.id);
+}
+
+function showAchievementPopup(achievement, unlockedCount) {
+  const popup = document.getElementById("achievementPopup");
+  const icon = document.getElementById("achievementPopupIcon");
+  const title = document.getElementById("achievementPopupTitle");
+  const desc = document.getElementById("achievementPopupDesc");
+
+  if (!popup || !icon || !title || !desc) {
+    return;
+  }
+
+  icon.textContent = achievement.icon;
+  title.textContent = achievement.title;
+
+  if (unlockedCount > 1) {
+    desc.textContent = `${achievement.desc} Plus ${unlockedCount - 1} more achievement${unlockedCount - 1 === 1 ? "" : "s"} unlocked.`;
+  } else {
+    desc.textContent = achievement.desc;
+  }
+
+  popup.classList.add("show");
+
+  window.clearTimeout(showAchievementPopup.timeout);
+  showAchievementPopup.timeout = window.setTimeout(() => {
+    popup.classList.remove("show");
+  }, 3600);
+}
+
+function getWeekKey(dateValue) {
+  const date = parseLocalDate(dateValue);
+  const weekStart = getWeekStart(date);
+
+  return formatDateInput(weekStart);
+}
+
+function slugify(value) {
+  return String(value)
+    .toLowerCase()
+    .replaceAll("&", "and")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
 }
 
 function showToast(message) {

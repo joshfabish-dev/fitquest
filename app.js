@@ -121,7 +121,34 @@ const ACHIEVEMENTS = [
     icon: "30",
     test: stats => stats.streak >= 30
   },
-
+  {
+    id: "seven_training_days",
+    title: "7 Training Days",
+    desc: "Log activity on 7 different days.",
+    icon: "D7",
+    test: stats => stats.totalTrainingDays >= 7
+  },
+  {
+    id: "thirty_training_days",
+    title: "30 Training Days",
+    desc: "Log activity on 30 different days.",
+    icon: "D30",
+    test: stats => stats.totalTrainingDays >= 30
+  },
+  {
+    id: "hundred_training_days",
+    title: "100 Training Days",
+    desc: "Log activity on 100 different days.",
+    icon: "D100",
+    test: stats => stats.totalTrainingDays >= 100
+  },
+  {
+    id: "three_sixty_five_training_days",
+    title: "365 Training Days",
+    desc: "Log activity on 365 different days.",
+    icon: "365",
+    test: stats => stats.totalTrainingDays >= 365
+  },
   {
     id: "one_active_week",
     title: "First Training Week",
@@ -186,7 +213,34 @@ const ACHIEVEMENTS = [
     icon: "M12",
     test: stats => stats.activeMonths >= 12
   },
-
+  {
+    id: "level_5_athlete",
+    title: "Level 5 Athlete",
+    desc: "Reach Level 5.",
+    icon: "L5",
+    test: stats => stats.level >= 5
+  },
+  {
+    id: "level_10_athlete",
+    title: "Level 10 Athlete",
+    desc: "Reach Level 10.",
+    icon: "L10",
+    test: stats => stats.level >= 10
+  },
+  {
+    id: "level_25_athlete",
+    title: "Level 25 Athlete",
+    desc: "Reach Level 25.",
+    icon: "L25",
+    test: stats => stats.level >= 25
+  },
+  {
+    id: "level_50_athlete",
+    title: "Level 50 Athlete",
+    desc: "Reach Level 50.",
+    icon: "L50",
+    test: stats => stats.level >= 50
+  },
   {
     id: "hundred_points",
     title: "100 Points",
@@ -1186,20 +1240,22 @@ function calculateStats(profile) {
     "Soccer Supplemental": activities.filter(activity => activity.type === "Soccer Supplemental").length
     };
 
-    const activeWeekKeys = new Set();
-    const activeMonthKeys = new Set();
+    const activeDayKeys = new Set();
+  const activeWeekKeys = new Set();
+  const activeMonthKeys = new Set();
 
-    activities.forEach(activity => {
+  activities.forEach(activity => {
     if (!activity.date) return;
 
+    activeDayKeys.add(activity.date);
     activeWeekKeys.add(getWeekKey(activity.date));
     activeMonthKeys.add(activity.date.slice(0, 7));
-    });
+  });
 
-    const activeWeeks = activeWeekKeys.size;
-    const activeMonths = activeMonthKeys.size;
-
-    const streak = calculateStreak(activities);
+  const totalTrainingDays = activeDayKeys.size;
+  const activeWeeks = activeWeekKeys.size;
+  const activeMonths = activeMonthKeys.size;
+  const streak = calculateStreak(activities);
 
   return {
     totalPoints,
@@ -1218,6 +1274,7 @@ function calculateStats(profile) {
     workoutCount,
     hardSessions,
     activityTypeCounts,
+    totalTrainingDays,
     activeWeeks,
     activeMonths,
     streak,

@@ -906,28 +906,23 @@
 }
 
 /* ======================================================
-   FLOATING LOG ACTIVITY BUTTON
+   LOG ACTIVITY LAUNCH CARD
 
    Purpose:
-   - Primary action button
-   - Opens activity form modal (future step)
-   - Always visible on Track screen
+   - Home screen primary action
+   - Opens activity form modal
 
 ====================================================== */
 
-.fab-log {
-  position: fixed;
-  right: 18px;
+.log-workout-card {
 
-  bottom: calc(96px + var(--safe-bottom));
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-  z-index: 70;
+  padding: 18px;
 
-  width: 64px;
-  height: 64px;
-
-  border: 0;
-  border-radius: 999px;
+  margin-bottom: 16px;
 
   background: linear-gradient(
     145deg,
@@ -937,19 +932,57 @@
 
   color: white;
 
-  font-size: 32px;
-  font-weight: 900;
+  border-radius: 22px;
 
   box-shadow:
-    0 12px 24px rgba(22,163,74,.35);
+    0 12px 28px rgba(22,163,74,.25);
+
+  cursor: pointer;
+
+  transition:
+    transform .15s ease;
+}
+
+.log-workout-card:active {
+
+  transform: scale(.98);
+}
+
+.log-workout-icon {
+
+  width: 54px;
+  height: 54px;
+
+  border-radius: 16px;
+
+  background: rgba(255,255,255,.18);
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.log-workout-title {
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.log-workout-subtitle {
+
+  margin-top: 2px;
+
+  color:
+    rgba(255,255,255,.85);
+
+  font-size: 14px;
 }
 
 /* ======================================================
-   END FLOATING LOG ACTIVITY BUTTON
+   END LOG ACTIVITY LAUNCH CARD
 ====================================================== */
 
 .bottom-tabs {
@@ -1103,6 +1136,38 @@
             Log your first workout
           </div>
         </div>
+
+        <!-- =====================================================
+            LOG ACTIVITY LAUNCH CARD
+
+            Purpose:
+            - Primary action on Home Screen
+            - Opens Activity Modal (future step)
+
+        ===================================================== -->
+
+        <div
+          id="openActivityForm"
+          class="log-workout-card"
+        >
+          <div class="log-workout-icon">
+            +
+          </div>
+
+          <div>
+            <div class="log-workout-title">
+              Log Activity
+            </div>
+
+            <div class="log-workout-subtitle">
+              Earn XP and level up
+            </div>
+          </div>
+        </div>
+
+        <!-- =====================================================
+            END LOG ACTIVITY LAUNCH CARD
+        ===================================================== -->
 
         <div class="mini-hero-card quest-card">
           <div style="font-weight:900;font-size:18px;">
@@ -1495,22 +1560,6 @@
         </div>
       </section>
     </main>
-
-    <!-- =====================================================
-        FLOATING LOG ACTIVITY BUTTON
-    ===================================================== -->
-
-    <button
-      id="fabLogActivity"
-      class="fab-log"
-      type="button"
-    >
-      +
-    </button>
-
-    <!-- =====================================================
-        END FLOATING LOG ACTIVITY BUTTON
-    ===================================================== -->
 
     <nav class="bottom-tabs" aria-label="Main navigation">
       <div class="tabs-inner">

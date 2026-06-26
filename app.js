@@ -526,6 +526,29 @@ function bindEvents() {
     updateEstimatedPoints();
   });
 
+  /* ======================================================
+    LOG ACTIVITY LAUNCH CARD
+
+    Temporary Handler.
+    Will open modal in next step.
+
+  ====================================================== */
+
+  document
+    .getElementById("openActivityForm")
+    .addEventListener("click", () => {
+
+      showToast(
+        "Activity modal coming next."
+      );
+
+    });
+
+  /* ======================================================
+    END LOG ACTIVITY LAUNCH CARD
+  ====================================================== */
+
+
   document.querySelectorAll(".quick-btn").forEach(button => {
     button.addEventListener("click", () => {
       const minutes = button.dataset.minutes;
@@ -579,28 +602,7 @@ function bindEvents() {
     });
   });
 
-  /* ======================================================
-   FLOATING ACTION BUTTON
-
-   Temporary test handler.
-   Modal will be connected in Step 2.
-
-====================================================== */
-
-document
-  .getElementById("fabLogActivity")
-  .addEventListener("click", () => {
-
-    showToast(
-      "Log Activity modal coming next."
-    );
-
-  });
-
-/* ======================================================
-   END FLOATING ACTION BUTTON
-====================================================== */
-
+ 
   [
     "duration",
     "intensity",

@@ -813,6 +813,31 @@
   border-color: var(--orange);
 }
 
+/* =========================================
+   INTENSITY BUTTONS
+========================================= */
+
+.intensity-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.intensity-btn {
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  color: var(--ink);
+  border-radius: 14px;
+  min-height: 48px;
+  font-weight: 900;
+}
+
+.intensity-btn.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
 .score-card {
   background: linear-gradient(145deg,#dbeafe,#eff6ff);
   border: 1px solid #bfdbfe;
@@ -1106,11 +1131,30 @@
             </div>
 
             <div>
-              <label for="intensity">Intensity</label>
-              <select id="intensity">
-                <option>Easy</option>
-                <option selected>Moderate</option>
-                <option>Hard</option>
+              <label>Intensity</label>
+
+              <div class="intensity-buttons">
+                <button type="button" class="intensity-btn" data-intensity="Easy">
+                  Low
+                </button>
+
+                <button
+                  type="button"
+                  class="intensity-btn active"
+                  data-intensity="Moderate"
+                >
+                  Medium
+                </button>
+
+                <button type="button" class="intensity-btn" data-intensity="Hard">
+                  High
+                </button>
+              </div>
+
+              <select id="intensity" class="hidden">
+                <option value="Easy">Easy</option>
+                <option value="Moderate" selected>Moderate</option>
+                <option value="Hard">Hard</option>
               </select>
             </div>
           </div>

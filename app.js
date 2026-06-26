@@ -558,6 +558,27 @@ function bindEvents() {
     });
   });
 
+  document.querySelectorAll(".intensity-btn").forEach(button => {
+    button.addEventListener("click", () => {
+
+      const intensity =
+        button.dataset.intensity;
+
+      document.getElementById("intensity").value =
+        intensity;
+
+      document
+        .querySelectorAll(".intensity-btn")
+        .forEach(btn => {
+          btn.classList.remove("active");
+        });
+
+      button.classList.add("active");
+
+      updateEstimatedPoints();
+    });
+  });
+
   [
     "duration",
     "intensity",
@@ -828,12 +849,9 @@ function saveActivity() {
 
       // Major milestone levels
       if ([5, 10, 25, 50].includes(newLevel)) {
-
         icon = "🏅";
-
         title = `Level ${newLevel} Athlete`;
-
-        text = `Major milestone reached!`;
+        text = `${previousLevel} → ${newLevel}`;
       }
 
       showCelebration(
@@ -878,6 +896,20 @@ function clearForm(showMessage) {
       btn.classList.remove("active");
     });
   document.getElementById("intensity").value = "Moderate";
+  document
+    .querySelectorAll(".intensity-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+  const defaultIntensity =
+    document.querySelector(
+      '.intensity-btn[data-intensity="Moderate"]'
+    );
+
+  if (defaultIntensity) {
+    defaultIntensity.classList.add("active");
+  }
   document.getElementById("effort").value = "3";
   document.querySelectorAll(".effort-btn").forEach(btn => {
   btn.classList.remove("active");

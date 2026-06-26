@@ -1,5 +1,6 @@
 const STORAGE_KEY = "fitquest.v1.data";
 const POINTS_PER_LEVEL = 500;
+const WEEKLY_QUEST_REWARD = 250;
 
 const DEFAULT_GOALS = {
   weeklyPoints: 400,
@@ -454,7 +455,8 @@ function createDefaultState() {
         name: "Athlete 1",
         createdAt: new Date().toISOString(),
         goals: { ...DEFAULT_GOALS },
-        activities: []
+        activities: [],
+        questRewardWeeks: []
       }
     ]
   };
@@ -491,6 +493,11 @@ function ensureActiveProfile() {
   if (!exists) {
     state.activeProfileId = state.profiles[0].id;
   }
+  state.profiles.forEach(profile => {
+    if (!Array.isArray(profile.questRewardWeeks)) {
+      profile.questRewardWeeks = [];
+    }
+  });
 }
 
 function getActiveProfile() {
@@ -720,7 +727,39 @@ function saveActivity() {
   activity.points = calculatePoints(activity);
 
   profile.activities.push(activity);
-  saveState();
+
+    const questStatus = getWeeklyQuestStatus(profile);
+
+    if (
+      questStatus.completed &&
+      !questStatus.alreadyRewarded
+    ) {
+      profile.questRewardWeeks.push(
+        questStatus.weekKey
+      );
+
+      const bonusActivity = {
+        id: makeId(),
+        date,
+        type: "Weekly Quest Bonus",
+        duration: 0,
+        intensity: "Bonus",
+        effort: 0,
+        focusArea: "",
+        notes: "Quest reward",
+        points: WEEKLY_QUEST_REWARD,
+        createdAt: new Date().toISOString()
+      };
+
+      profile.activities.push(bonusActivity);
+
+      showToast(
+        `🏆 Weekly Quest Complete! +${WEEKLY_QUEST_REWARD} XP`
+      );
+    }
+
+    saveState();
+
 
   const unlockedAfter = getUnlockedAchievements(profile);
   const newlyUnlocked = unlockedAfter.filter(achievement => !unlockedBefore.has(achievement.id));
@@ -1134,6 +1173,46 @@ function renderWeeklyQuest() {
 
   document.getElementById("questRunCheck").style.background =
     runningCount >= 2 ? "#22c55e" : "transparent";
+}
+
+function getWeeklyQuestStatus(profile) {
+  const now = new Date();
+  const weekStart = getWeekStart(now);
+  const weekKey = formatDateInput(weekStart);
+
+  const weeklyActivities = profile.activities.filter(activity => {
+    const activityDate = parseLocalDate(activity.date);
+
+    return (
+      activityDate >= weekStart &&
+      activityDate <= endOfDay(now)
+    );
+  });
+
+  const activityCount = weeklyActivities.length;
+
+  const minuteCount = weeklyActivities.reduce(
+    (sum, activity) => sum + toNumber(activity.duration),
+    0
+  );
+
+  const runningCount = weeklyActivities.filter(
+    activity => activity.type === "Running"
+  ).length;
+
+  const completed =
+    activityCount >= 4 &&
+    minuteCount >= 180 &&
+    runningCount >= 2;
+
+  const alreadyRewarded =
+    profile.questRewardWeeks.includes(weekKey);
+
+  return {
+    weekKey,
+    completed,
+    alreadyRewarded
+  };
 }
 
 function renderRecentActivities() {

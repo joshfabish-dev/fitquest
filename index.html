@@ -905,6 +905,53 @@
   color: #22c55e;
 }
 
+/* ======================================================
+   FLOATING LOG ACTIVITY BUTTON
+
+   Purpose:
+   - Primary action button
+   - Opens activity form modal (future step)
+   - Always visible on Track screen
+
+====================================================== */
+
+.fab-log {
+  position: fixed;
+  right: 18px;
+
+  bottom: calc(96px + var(--safe-bottom));
+
+  z-index: 70;
+
+  width: 64px;
+  height: 64px;
+
+  border: 0;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    145deg,
+    #22c55e,
+    #16a34a
+  );
+
+  color: white;
+
+  font-size: 32px;
+  font-weight: 900;
+
+  box-shadow:
+    0 12px 24px rgba(22,163,74,.35);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ======================================================
+   END FLOATING LOG ACTIVITY BUTTON
+====================================================== */
+
 .bottom-tabs {
   position: fixed;
   left: 0;
@@ -1448,6 +1495,22 @@
         </div>
       </section>
     </main>
+
+    <!-- =====================================================
+        FLOATING LOG ACTIVITY BUTTON
+    ===================================================== -->
+
+    <button
+      id="fabLogActivity"
+      class="fab-log"
+      type="button"
+    >
+      +
+    </button>
+
+    <!-- =====================================================
+        END FLOATING LOG ACTIVITY BUTTON
+    ===================================================== -->
 
     <nav class="bottom-tabs" aria-label="Main navigation">
       <div class="tabs-inner">

@@ -579,6 +579,28 @@ function bindEvents() {
     });
   });
 
+  /* ======================================================
+   FLOATING ACTION BUTTON
+
+   Temporary test handler.
+   Modal will be connected in Step 2.
+
+====================================================== */
+
+document
+  .getElementById("fabLogActivity")
+  .addEventListener("click", () => {
+
+    showToast(
+      "Log Activity modal coming next."
+    );
+
+  });
+
+/* ======================================================
+   END FLOATING ACTION BUTTON
+====================================================== */
+
   [
     "duration",
     "intensity",

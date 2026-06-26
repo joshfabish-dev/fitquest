@@ -1,8 +1,8 @@
 const STORAGE_KEY = "fitquest.v1.data";
-const POINTS_PER_LEVEL = 250;
+const POINTS_PER_LEVEL = 500;
 
 const DEFAULT_GOALS = {
-  weeklyPoints: 250,
+  weeklyPoints: 400,
   weeklyMinutes: 180,
   weeklySoccerSessions: 3,
   weeklyRunningMiles: 5

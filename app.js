@@ -530,6 +530,7 @@ function bindEvents() {
     ACTIVITY MODAL
 
     Open Modal
+    Always reset scroll position to top
 
   ====================================================== */
 
@@ -537,16 +538,24 @@ function bindEvents() {
     .getElementById("openActivityForm")
     .addEventListener("click", () => {
 
+      const modal =
+        document.getElementById("activityModal");
+
+      modal.classList.add("show");
+
+      /* --------------------------------------------------
+        Reset modal scroll position
+      -------------------------------------------------- */
+
       document
-        .getElementById("activityModal")
-        .classList.add("show");
+        .querySelector(".activity-modal-sheet")
+        .scrollTop = 0;
 
     });
 
   /* ======================================================
-    CLOSE MODAL
+    END ACTIVITY MODAL
   ====================================================== */
-
   document
     .getElementById("closeActivityModal")
     .addEventListener("click", () => {
@@ -554,6 +563,10 @@ function bindEvents() {
       document
         .getElementById("activityModal")
         .classList.remove("show");
+      
+      document
+        .querySelector(".activity-modal-sheet")
+        .scrollTop = 0;
 
     });
 
@@ -860,6 +873,14 @@ function saveActivity() {
     }
 
     saveState();
+
+    /* ------------------------------------------------------
+      Close Activity Modal After Save
+    ------------------------------------------------------ */
+
+    document
+      .getElementById("activityModal")
+      .classList.remove("show");
 
     /* ------------------------------------------------------
       Level after save.

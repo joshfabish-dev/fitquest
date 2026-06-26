@@ -1433,173 +1433,7 @@
           </div>
         </div>
 
-        <div class="card">
-          <h2 class="section-title">Log an Activity</h2>
-
-          <div class="grid two">
-            <div>
-              <label for="activityDate">Date</label>
-              <input id="activityDate" type="date" />
-            </div>
-
-            <div>
-              <label for="activityType">Activity Type</label>
-              <select id="activityType">
-                <option>Home Workout</option>
-                <option>Gym Workout</option>
-                <option>Running</option>
-                <option>Outdoor Fitness</option>
-                <option>Soccer Supplemental</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid two" style="margin-top: 12px;">
-            <div>
-              <label for="duration">Duration, minutes</label>
-              <input id="duration" type="number" inputmode="numeric" min="1" placeholder="30" />
-              <div class="quick-button-row">
-                <button type="button" class="quick-btn" data-minutes="15">15</button>
-                <button type="button" class="quick-btn" data-minutes="30">30</button>
-                <button type="button" class="quick-btn" data-minutes="45">45</button>
-                <button type="button" class="quick-btn" data-minutes="60">60</button>
-              </div>
-            </div>
-
-            <div>
-              <label>Intensity</label>
-
-              <div class="intensity-buttons">
-                <button type="button" class="intensity-btn" data-intensity="Easy">
-                  Low
-                </button>
-
-                <button
-                  type="button"
-                  class="intensity-btn active"
-                  data-intensity="Moderate"
-                >
-                  Medium
-                </button>
-
-                <button type="button" class="intensity-btn" data-intensity="Hard">
-                  High
-                </button>
-              </div>
-
-              <select id="intensity" class="hidden">
-                <option value="Easy">Easy</option>
-                <option value="Moderate" selected>Moderate</option>
-                <option value="Hard">Hard</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid two" style="margin-top: 12px;">
-            <div>
-             <label>Effort Score</label>
-
-            <div class="effort-buttons">
-              <button type="button" class="effort-btn" data-effort="1">1</button>
-              <button type="button" class="effort-btn" data-effort="2">2</button>
-              <button type="button" class="effort-btn active" data-effort="3">3</button>
-              <button type="button" class="effort-btn" data-effort="4">4</button>
-              <button type="button" class="effort-btn" data-effort="5">5</button>
-            </div>
-
-            <select id="effort" class="hidden">
-                <option value="1">1 - Low</option>
-                <option value="2">2 - Steady</option>
-                <option value="3" selected>3 - Good</option>
-                <option value="4">4 - Strong</option>
-                <option value="5">5 - Excellent</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="focusArea">Focus Area</label>
-              <select id="focusArea"></select>
-            </div>
-          </div>
-
-          <div id="runningFields" class="grid two hidden" style="margin-top: 12px;">
-            <div>
-              <label for="distanceMiles">Distance, miles</label>
-              <input id="distanceMiles" type="number" inputmode="decimal" step="0.01" min="0" placeholder="2.5" />
-            </div>
-
-            <div>
-              <label for="routeType">Route Type</label>
-              <select id="routeType">
-                <option>Neighborhood</option>
-                <option>Track</option>
-                <option>Trail</option>
-                <option>Treadmill</option>
-              </select>
-            </div>
-          </div>
-
-          <div id="soccerFields" class="grid two hidden" style="margin-top: 12px;">
-            <div>
-              <label for="ballTouches">Ball Touches</label>
-              <input id="ballTouches" type="number" inputmode="numeric" min="0" placeholder="250" />
-            </div>
-
-            <div>
-              <label for="soccerMinutes">Technical Minutes</label>
-              <input id="soccerMinutes" type="number" inputmode="numeric" min="0" placeholder="20" />
-            </div>
-          </div>
-
-          <div id="exerciseSection" style="margin-top: 14px;">
-            <label>Exercise Details</label>
-            <div class="exercise-builder">
-              <div class="grid two">
-                <div>
-                  <input id="exerciseName" type="text" placeholder="Exercise name" />
-                </div>
-                <div>
-                  <input id="exerciseWeight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="Weight, optional" />
-                </div>
-              </div>
-
-              <div class="grid two" style="margin-top: 10px;">
-                <div>
-                  <input id="exerciseSets" type="number" inputmode="numeric" min="1" placeholder="Sets" />
-                </div>
-                <div>
-                  <input id="exerciseReps" type="number" inputmode="numeric" min="1" placeholder="Reps" />
-                </div>
-              </div>
-
-              <div class="button-row" style="margin-top: 10px;">
-                <button class="btn secondary" id="addExerciseBtn" type="button">Add Exercise</button>
-              </div>
-
-              <div id="exerciseList" class="grid" style="margin-top: 12px;"></div>
-            </div>
-          </div>
-
-          <div style="margin-top: 12px;">
-            <label for="notes">Notes</label>
-            <textarea id="notes" placeholder="How did it feel? What did you work on?"></textarea>
-          </div>
-
-          <div class="score-card" style="margin-top:12px;">
-            <div class="score-card-label">
-              Estimated Reward
-            </div>
-            <div class="score-card-value">
-              <span id="estimatedPoints">0</span> XP
-            </div>
-          </div>
-
-          <div class="button-row" style="margin-top: 14px;">
-            <button class="btn green full" id="saveActivityBtn">Save Activity</button>
-            <button class="btn secondary full" id="clearFormBtn">Clear Form</button>
-          </div>
-        </div>
-
+        
         <div class="card">
           <h2 class="section-title">Recent Activities</h2>
           <div id="recentActivities" class="grid"></div>
@@ -1870,9 +1704,171 @@
 
     <div class="activity-modal-content">
 
-      <p class="subtle">
-        Activity form moving here in next step.
-      </p>
+     <div class="card">
+         
+          <div class="grid two">
+            <div>
+              <label for="activityDate">Date</label>
+              <input id="activityDate" type="date" />
+            </div>
+
+            <div>
+              <label for="activityType">Activity Type</label>
+              <select id="activityType">
+                <option>Home Workout</option>
+                <option>Gym Workout</option>
+                <option>Running</option>
+                <option>Outdoor Fitness</option>
+                <option>Soccer Supplemental</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top: 12px;">
+            <div>
+              <label for="duration">Duration, minutes</label>
+              <input id="duration" type="number" inputmode="numeric" min="1" placeholder="30" />
+              <div class="quick-button-row">
+                <button type="button" class="quick-btn" data-minutes="15">15</button>
+                <button type="button" class="quick-btn" data-minutes="30">30</button>
+                <button type="button" class="quick-btn" data-minutes="45">45</button>
+                <button type="button" class="quick-btn" data-minutes="60">60</button>
+              </div>
+            </div>
+
+            <div>
+              <label>Intensity</label>
+
+              <div class="intensity-buttons">
+                <button type="button" class="intensity-btn" data-intensity="Easy">
+                  Low
+                </button>
+
+                <button
+                  type="button"
+                  class="intensity-btn active"
+                  data-intensity="Moderate"
+                >
+                  Medium
+                </button>
+
+                <button type="button" class="intensity-btn" data-intensity="Hard">
+                  High
+                </button>
+              </div>
+
+              <select id="intensity" class="hidden">
+                <option value="Easy">Easy</option>
+                <option value="Moderate" selected>Moderate</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid two" style="margin-top: 12px;">
+            <div>
+             <label>Effort Score</label>
+
+            <div class="effort-buttons">
+              <button type="button" class="effort-btn" data-effort="1">1</button>
+              <button type="button" class="effort-btn" data-effort="2">2</button>
+              <button type="button" class="effort-btn active" data-effort="3">3</button>
+              <button type="button" class="effort-btn" data-effort="4">4</button>
+              <button type="button" class="effort-btn" data-effort="5">5</button>
+            </div>
+
+            <select id="effort" class="hidden">
+                <option value="1">1 - Low</option>
+                <option value="2">2 - Steady</option>
+                <option value="3" selected>3 - Good</option>
+                <option value="4">4 - Strong</option>
+                <option value="5">5 - Excellent</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="focusArea">Focus Area</label>
+              <select id="focusArea"></select>
+            </div>
+          </div>
+
+          <div id="runningFields" class="grid two hidden" style="margin-top: 12px;">
+            <div>
+              <label for="distanceMiles">Distance, miles</label>
+              <input id="distanceMiles" type="number" inputmode="decimal" step="0.01" min="0" placeholder="2.5" />
+            </div>
+
+            <div>
+              <label for="routeType">Route Type</label>
+              <select id="routeType">
+                <option>Neighborhood</option>
+                <option>Track</option>
+                <option>Trail</option>
+                <option>Treadmill</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="soccerFields" class="grid two hidden" style="margin-top: 12px;">
+            <div>
+              <label for="ballTouches">Ball Touches</label>
+              <input id="ballTouches" type="number" inputmode="numeric" min="0" placeholder="250" />
+            </div>
+
+            <div>
+              <label for="soccerMinutes">Technical Minutes</label>
+              <input id="soccerMinutes" type="number" inputmode="numeric" min="0" placeholder="20" />
+            </div>
+          </div>
+
+          <div id="exerciseSection" style="margin-top: 14px;">
+            <label>Exercise Details</label>
+            <div class="exercise-builder">
+              <div class="grid two">
+                <div>
+                  <input id="exerciseName" type="text" placeholder="Exercise name" />
+                </div>
+                <div>
+                  <input id="exerciseWeight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="Weight, optional" />
+                </div>
+              </div>
+
+              <div class="grid two" style="margin-top: 10px;">
+                <div>
+                  <input id="exerciseSets" type="number" inputmode="numeric" min="1" placeholder="Sets" />
+                </div>
+                <div>
+                  <input id="exerciseReps" type="number" inputmode="numeric" min="1" placeholder="Reps" />
+                </div>
+              </div>
+
+              <div class="button-row" style="margin-top: 10px;">
+                <button class="btn secondary" id="addExerciseBtn" type="button">Add Exercise</button>
+              </div>
+
+              <div id="exerciseList" class="grid" style="margin-top: 12px;"></div>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <label for="notes">Notes</label>
+            <textarea id="notes" placeholder="How did it feel? What did you work on?"></textarea>
+          </div>
+
+          <div class="score-card" style="margin-top:12px;">
+            <div class="score-card-label">
+              Estimated Reward
+            </div>
+            <div class="score-card-value">
+              <span id="estimatedPoints">0</span> XP
+            </div>
+          </div>
+
+          <div class="button-row" style="margin-top: 14px;">
+            <button class="btn green full" id="saveActivityBtn">Save Activity</button>
+            <button class="btn secondary full" id="clearFormBtn">Clear Form</button>
+          </div>
+        </div>
 
     </div>
 

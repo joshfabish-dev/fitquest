@@ -1065,6 +1065,101 @@
    END LOG ACTIVITY LAUNCH CARD
 ====================================================== */
 
+/* ======================================================
+   ACTIVITY MODAL
+
+   Purpose:
+   - Full-screen activity entry experience
+   - Opens from Log Activity card
+
+====================================================== */
+
+.activity-modal {
+  position: fixed;
+  inset: 0;
+
+  z-index: 4000;
+
+  background: rgba(15,23,42,.6);
+
+  backdrop-filter: blur(6px);
+
+  display: none;
+}
+
+.activity-modal.show {
+  display: block;
+}
+
+.activity-modal-sheet {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: var(--bg);
+
+  overflow-y: auto;
+
+  animation: modalSlideIn .25s ease;
+}
+
+.activity-modal-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 5;
+
+  background: white;
+
+  padding: 18px;
+
+  border-bottom: 1px solid var(--line);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activity-modal-title {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.activity-modal-close {
+  border: 0;
+
+  background: #e2e8f0;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.activity-modal-content {
+  padding: 16px;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ======================================================
+   END ACTIVITY MODAL
+====================================================== */
+
 .bottom-tabs {
   position: fixed;
   left: 0;
@@ -1687,6 +1782,52 @@
   </div>
 </div>
 
+<!-- =====================================================
+     ACTIVITY MODAL
+
+     Step 1:
+     Empty shell only
+
+===================================================== -->
+
+<div
+  id="activityModal"
+  class="activity-modal"
+>
+
+  <div class="activity-modal-sheet">
+
+    <div class="activity-modal-header">
+
+      <div class="activity-modal-title">
+        Log Activity
+      </div>
+
+      <button
+        id="closeActivityModal"
+        class="activity-modal-close"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="activity-modal-content">
+
+      <p class="subtle">
+        Activity form moving here in next step.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+     END ACTIVITY MODAL
+===================================================== -->
 
     <div id="toast" class="toast"></div>
 

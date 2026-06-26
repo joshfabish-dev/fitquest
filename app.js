@@ -527,10 +527,9 @@ function bindEvents() {
   });
 
   /* ======================================================
-    LOG ACTIVITY LAUNCH CARD
+    ACTIVITY MODAL
 
-    Temporary Handler.
-    Will open modal in next step.
+    Open Modal
 
   ====================================================== */
 
@@ -538,14 +537,28 @@ function bindEvents() {
     .getElementById("openActivityForm")
     .addEventListener("click", () => {
 
-      showToast(
-        "Activity modal coming next."
-      );
+      document
+        .getElementById("activityModal")
+        .classList.add("show");
 
     });
 
   /* ======================================================
-    END LOG ACTIVITY LAUNCH CARD
+    CLOSE MODAL
+  ====================================================== */
+
+  document
+    .getElementById("closeActivityModal")
+    .addEventListener("click", () => {
+
+      document
+        .getElementById("activityModal")
+        .classList.remove("show");
+
+    });
+
+  /* ======================================================
+    END ACTIVITY MODAL
   ====================================================== */
 
 

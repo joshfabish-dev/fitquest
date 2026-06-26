@@ -12,7 +12,7 @@ const STORAGE_KEY = "fitquest.v1.data";
 
 ====================================================== */
 
-const APP_VERSION = "1.0.1";
+const APP_VERSION = "1.0.2";
 const POINTS_PER_LEVEL = 500;
 const WEEKLY_QUEST_REWARD = 250;
 

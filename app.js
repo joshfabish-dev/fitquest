@@ -724,6 +724,22 @@ function saveActivity() {
     return;
   }
 
+  /* ------------------------------------------------------
+    Running Validation
+    Running activities require mileage since
+    mileage is used for goals, stats, and achievements.
+  ------------------------------------------------------ */
+
+  if (
+    type === "Running" &&
+    (!distanceMiles || distanceMiles <= 0)
+  ) {
+    showToast(
+      "Enter distance in miles for running activities."
+    );
+    return;
+  }
+
   const activity = {
     id: makeId(),
     date,

@@ -1,4 +1,18 @@
 const STORAGE_KEY = "fitquest.v1.data";
+/* ======================================================
+   APPLICATION VERSION
+
+   Update this whenever you deploy a new release.
+
+   Examples:
+   1.0.0
+   1.0.1
+   1.1.0
+   2.0.0
+
+====================================================== */
+
+const APP_VERSION = "1.0.0";
 const POINTS_PER_LEVEL = 500;
 const WEEKLY_QUEST_REWARD = 250;
 
@@ -1234,6 +1248,7 @@ function renderAll() {
   renderGoalInputs();
   renderLastSaved();
   renderExerciseList();
+  renderAppVersion();
   updateEstimatedPoints();
 }
 
@@ -1634,6 +1649,24 @@ function renderLastSaved() {
   }
 
   element.textContent = new Date(state.lastSaved).toLocaleString();
+}
+
+/* ======================================================
+   APP VERSION DISPLAY
+
+====================================================== */
+
+function renderAppVersion() {
+
+  const versionElement =
+    document.getElementById("appVersion");
+
+  if (!versionElement) {
+    return;
+  }
+
+  versionElement.textContent =
+    APP_VERSION;
 }
 
 function calculateStats(profile) {

@@ -868,11 +868,22 @@
   margin-bottom: 16px;
 }
 
+/* ======================================================
+   QUEST OF THE WEEK CARD
+
+   Purpose:
+   - Visually separate from Today's Quest
+   - Highlight weekly challenge
+   - Emphasize rewards and completion
+
+====================================================== */
+
 .quest-card {
+
   background:
     radial-gradient(
       circle at top right,
-      rgba(250,204,21,.20),
+      rgba(250, 204, 21, 0.22),
       transparent 24%
     ),
     linear-gradient(
@@ -881,8 +892,59 @@
       #1e3a8a
     );
 
-  border: 2px solid rgba(250,204,21,.35);
+  color: white;
+
+  border: 3px solid rgba(250, 204, 21, 0.65);
+
+  box-shadow:
+    0 8px 24px rgba(250, 204, 21, 0.12);
 }
+
+/* Force title to remain bright */
+
+.quest-card .section-title {
+
+  color: white;
+
+  font-weight: 900;
+
+  margin-bottom: 14px;
+}
+
+/* Quest text */
+
+.quest-card .subtle,
+.quest-card .activity-meta,
+.quest-card #questActivitiesText,
+.quest-card #questMinutesText,
+.quest-card #questRunText {
+
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Completion status */
+
+.quest-complete {
+
+  color: #22c55e;
+
+  font-weight: 900;
+}
+
+/* Reward */
+
+.quest-reward {
+
+  margin-top: 14px;
+
+  font-weight: 900;
+
+  color: #facc15;
+}
+
+/* ======================================================
+   END QUEST OF THE WEEK CARD
+====================================================== */
 
 .quest-card .subtle,
 .quest-card .activity-meta,
@@ -914,6 +976,13 @@
 
 .quest-complete {
   color: #22c55e;
+}
+
+.quest-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 14
 }
 
 /* ======================================================
@@ -1139,7 +1208,7 @@
         </div>
 
         <div class="mini-hero-card quest-card">
-          <div style="font-weight:900;font-size:18px;">
+          <div class="quest-title">
             Quest of the Week
           </div>
 

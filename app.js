@@ -1000,6 +1000,7 @@ function renderAll() {
   renderHeader();
   renderHero();
   renderLastActivity();
+  renderWeeklyQuest();
   renderRecentActivities();
   renderStats();
   renderAchievements();
@@ -1078,6 +1079,61 @@ function renderLastActivity() {
 
   meta.textContent =
     `${latest.points} pts • ${latest.duration} min • ${formatReadableDate(latest.date)}`;
+}
+
+function renderWeeklyQuest() {
+  const profile = getActiveProfile();
+
+  const now = new Date();
+  const weekStart = getWeekStart(now);
+
+  const weeklyActivities = profile.activities.filter(activity => {
+    const activityDate = parseLocalDate(activity.date);
+
+    return (
+      activityDate >= weekStart &&
+      activityDate <= endOfDay(now)
+    );
+  });
+
+  const activityCount = weeklyActivities.length;
+
+  const minuteCount = weeklyActivities.reduce(
+    (sum, activity) => sum + toNumber(activity.duration),
+    0
+  );
+
+  const runningCount = weeklyActivities.filter(
+    activity => activity.type === "Running"
+  ).length;
+
+  document.getElementById("questActivitiesText").textContent =
+    `Activities: ${activityCount} / 4`;
+
+  document.getElementById("questMinutesText").textContent =
+    `Minutes: ${minuteCount} / 180`;
+
+  document.getElementById("questRunText").textContent =
+    `Running Sessions: ${runningCount} / 2`;
+
+  const completedParts =
+    (activityCount >= 4 ? 1 : 0) +
+    (minuteCount >= 180 ? 1 : 0) +
+    (runningCount >= 2 ? 1 : 0);
+
+  const percent = Math.round((completedParts / 3) * 100);
+
+  document.getElementById("questProgressText").textContent =
+    `${percent}% Complete`;
+
+  document.getElementById("questActivitiesCheck").style.background =
+    activityCount >= 4 ? "#22c55e" : "transparent";
+
+  document.getElementById("questMinutesCheck").style.background =
+    minuteCount >= 180 ? "#22c55e" : "transparent";
+
+  document.getElementById("questRunCheck").style.background =
+    runningCount >= 2 ? "#22c55e" : "transparent";
 }
 
 function renderRecentActivities() {

@@ -3,7 +3,7 @@ const POINTS_PER_LEVEL = 500;
 const WEEKLY_QUEST_REWARD = 250;
 
 const DEFAULT_GOALS = {
-  weeklyPoints: 400,
+  weeklyPoints: 500,
   weeklyMinutes: 180,
   weeklySoccerSessions: 3,
   weeklyRunningMiles: 5
@@ -728,12 +728,22 @@ function saveActivity() {
 
   profile.activities.push(activity);
 
+  let questCompleted = false;
+
     const questStatus = getWeeklyQuestStatus(profile);
 
     if (
       questStatus.completed &&
       !questStatus.alreadyRewarded
     ) {
+      
+      questCompleted = true;
+      showCelebration(
+        "🏆",
+        "Quest Complete!",
+        `You earned ${WEEKLY_QUEST_REWARD} bonus XP`
+      );
+
       profile.questRewardWeeks.push(
         questStatus.weekKey
       );
@@ -767,7 +777,11 @@ function saveActivity() {
   clearForm(false);
   renderAll();
 
-  showToast(`Saved ${activity.type}: ${activity.points} points earned.`);
+  if (!questCompleted) {
+  showToast(
+      `Saved ${activity.type}: ${activity.points} points earned.`
+    );
+  }
 
   if (newlyUnlocked.length) {
     showAchievementPopup(newlyUnlocked[0], newlyUnlocked.length);
@@ -894,7 +908,8 @@ function addProfile() {
     name,
     createdAt: new Date().toISOString(),
     goals: { ...DEFAULT_GOALS },
-    activities: []
+    activities: [],
+    questRewardWeeks: []
   };
 
   state.profiles.push(profile);
@@ -1127,6 +1142,11 @@ function renderWeeklyQuest() {
   const weekStart = getWeekStart(now);
 
   const weeklyActivities = profile.activities.filter(activity => {
+
+    if (activity.type === "Weekly Quest Bonus") {
+      return false;
+    }
+
     const activityDate = parseLocalDate(activity.date);
 
     return (
@@ -1161,9 +1181,38 @@ function renderWeeklyQuest() {
     (runningCount >= 2 ? 1 : 0);
 
   const percent = Math.round((completedParts / 3) * 100);
+  const fullyCompleted =
+    activityCount >= 4 &&
+    minuteCount >= 180 &&
+    runningCount >= 2;
 
-  document.getElementById("questProgressText").textContent =
-    `${percent}% Complete`;
+  const questStatus = getWeeklyQuestStatus(profile);
+
+
+  const progressElement =
+  document.getElementById("questProgressText");
+
+  if (
+    fullyCompleted &&
+    questStatus.alreadyRewarded
+  ) {
+    progressElement.textContent =
+      "🏆 QUEST COMPLETED";
+
+    progressElement.classList.add("quest-complete");
+
+    document.getElementById("questRewardText").textContent =
+      "Reward Claimed: +250 XP";
+  }
+  else {
+    progressElement.textContent =
+      `${percent}% Complete`;
+
+    progressElement.classList.remove("quest-complete");
+
+    document.getElementById("questRewardText").textContent =
+      "Reward: +250 XP";
+  }
 
   document.getElementById("questActivitiesCheck").style.background =
     activityCount >= 4 ? "#22c55e" : "transparent";
@@ -1181,6 +1230,11 @@ function getWeeklyQuestStatus(profile) {
   const weekKey = formatDateInput(weekStart);
 
   const weeklyActivities = profile.activities.filter(activity => {
+
+    if (activity.type === "Weekly Quest Bonus") {
+      return false;
+    }
+
     const activityDate = parseLocalDate(activity.date);
 
     return (
@@ -1652,6 +1706,37 @@ function showAchievementPopup(achievement, unlockedCount) {
     popup.classList.remove("show");
   }, 3600);
 }
+
+/* ======================================================
+   CELEBRATION SYSTEM
+====================================================== */
+
+function showCelebration(icon, title, text) {
+
+  const overlay =
+    document.getElementById("celebrationOverlay");
+
+  document.getElementById("celebrationIcon").textContent =
+    icon;
+
+  document.getElementById("celebrationTitle").textContent =
+    title;
+
+  document.getElementById("celebrationText").textContent =
+    text;
+
+  overlay.classList.add("show");
+
+  window.clearTimeout(showCelebration.timeout);
+
+  showCelebration.timeout = window.setTimeout(() => {
+    overlay.classList.remove("show");
+  }, 3000);
+}
+
+/* ======================================================
+   END CELEBRATION SYSTEM
+====================================================== */
 
 function getWeekKey(dateValue) {
   const date = parseLocalDate(dateValue);

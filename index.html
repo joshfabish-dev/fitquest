@@ -592,317 +592,381 @@
   line-height: 1.35;
 }
 
-    .activity-item,
-    .exercise-item,
-    .profile-item,
-    .achievement-item {
-      border: 1px solid var(--line);
-      background: #f8fafc;
-      border-radius: 18px;
-      padding: 13px;
-    }
+/* =========================================
+   CELEBRATION SYSTEM
+========================================= */
 
-    .activity-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
+.celebration-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: rgba(15, 23, 42, 0.65);
 
-    .activity-name {
-      font-weight: 950;
-      letter-spacing: -0.02em;
-    }
+  display: none;
+  align-items: center;
+  justify-content: center;
 
-    .activity-meta {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 3px;
-      line-height: 1.35;
-    }
+  backdrop-filter: blur(5px);
+}
 
-    .score-chip {
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-weight: 950;
-      font-size: 13px;
-      white-space: nowrap;
-    }
+.celebration-overlay.show {
+  display: flex;
+}
 
-    .mini-delete {
-      border: 0;
-      background: #fee2e2;
-      color: #991b1b;
-      border-radius: 12px;
-      padding: 8px 9px;
-      font-weight: 900;
-      margin-top: 8px;
-    }
+.celebration-card {
+  background: white;
+  border-radius: 28px;
+  padding: 28px;
+  width: min(90%, 420px);
 
-    .exercise-builder {
-      border: 1px dashed #cbd5e1;
-      border-radius: 18px;
-      padding: 14px;
-      background: #f8fafc;
-    }
+  text-align: center;
 
-    .achievement-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+  animation: celebrationPop 0.35s ease;
+}
 
-    @media (min-width: 620px) {
-      .achievement-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+.celebration-icon {
+  font-size: 64px;
+}
 
-    .achievement-item {
-      min-height: 118px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+.celebration-title {
+  margin-top: 12px;
+  font-size: 28px;
+  font-weight: 900;
+}
 
-    .achievement-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 16px;
-      background: linear-gradient(145deg, #facc15, #f97316);
-      color: #422006;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 950;
-      font-size: 20px;
-      margin-bottom: 9px;
-    }
+.celebration-text {
+  margin-top: 8px;
+  color: #64748b;
+  font-weight: 700;
+}
 
-    .achievement-title {
-      font-weight: 950;
-      font-size: 14px;
-      line-height: 1.15;
-    }
+@keyframes celebrationPop {
+  from {
+    transform: scale(.75);
+    opacity: 0;
+  }
 
-    .achievement-desc {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 4px;
-      line-height: 1.25;
-    }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
-    .achievement-item.locked {
-      opacity: 0.45;
-      filter: grayscale(1);
-    }
+.activity-item,
+.exercise-item,
+.profile-item,
+.achievement-item {
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  border-radius: 18px;
+  padding: 13px;
+}
 
-    .inline-note {
-      background: #eff6ff;
-      color: #1e3a8a;
-      border: 1px solid #bfdbfe;
-      border-radius: 16px;
-      padding: 12px;
-      font-size: 13px;
-      line-height: 1.4;
-      font-weight: 700;
-    }
+.activity-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-    .quick-button-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-top: 8px;
-    }
+.activity-name {
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
 
-    .quick-btn {
-      border: 1px solid var(--line);
-      background: #f8fafc;
-      color: var(--ink);
-      border-radius: 14px;
-      min-height: 44px;
-      font-weight: 900;
-    }
+.activity-meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 3px;
+  line-height: 1.35;
+}
 
-    .quick-btn.active {
-      background: var(--blue);
-      color: white;
-      border-color: var(--blue);
-    }
+.score-chip {
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-weight: 950;
+  font-size: 13px;
+  white-space: nowrap;
+}
 
-    .effort-buttons {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
+.mini-delete {
+  border: 0;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 12px;
+  padding: 8px 9px;
+  font-weight: 900;
+  margin-top: 8px;
+}
 
-    .effort-btn {
-      border: 1px solid var(--line);
-      background: #f8fafc;
-      color: var(--ink);
-      border-radius: 14px;
-      min-height: 48px;
-      font-weight: 900;
-    }
+.exercise-builder {
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+  padding: 14px;
+  background: #f8fafc;
+}
 
-    .effort-btn.active {
-      background: var(--orange);
-      color: white;
-      border-color: var(--orange);
-    }
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
 
-    .score-card {
-      background: linear-gradient(145deg,#dbeafe,#eff6ff);
-      border: 1px solid #bfdbfe;
-      border-radius: 18px;
-      padding: 16px;
-      text-align: center;
-    }
+@media (min-width: 620px) {
+  .achievement-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
-    .score-card-label {
-      font-size: 12px;
-      font-weight: 800;
-      color: #1e40af;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-    }
+.achievement-item {
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    .score-card-value {
-      font-size: 34px;
-      font-weight: 950;
-      margin-top: 4px;
-    }
+.achievement-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #facc15, #f97316);
+  color: #422006;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 950;
+  font-size: 20px;
+  margin-bottom: 9px;
+}
 
-    .mini-hero-card {
-      border-radius: 20px;
-      padding: 16px;
-      background: white;
-      border: 1px solid var(--line);
-      margin-bottom: 16px;
-    }
+.achievement-title {
+  font-weight: 950;
+  font-size: 14px;
+  line-height: 1.15;
+}
 
-    .quest-card {
-      background: linear-gradient(145deg,#102a43,#1e3a8a);
-      color: white;
-    }
+.achievement-desc {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+  line-height: 1.25;
+}
 
-    .quest-card .subtle,
-    .quest-card .activity-meta,
-    .quest-card #questActivitiesText,
-    .quest-card #questMinutesText,
-    .quest-card #questRunText {
-      color: rgba(255,255,255,.92);
-    }
+.achievement-item.locked {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
 
-    .quest-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
+.inline-note {
+  background: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 700;
+}
 
-    .quest-check {
-      width: 18px;
-      height: 18px;
-      border-radius: 6px;
-      border: 2px solid rgba(255,255,255,.6);
-    }
+.quick-button-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
 
-    .quest-reward {
-      margin-top: 14px;
-      font-weight: 900;
-      color: #facc15;
-    }
+.quick-btn {
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  color: var(--ink);
+  border-radius: 14px;
+  min-height: 44px;
+  font-weight: 900;
+}
 
-    .bottom-tabs {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 60;
-      padding: 10px 14px calc(10px + var(--safe-bottom));
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(18px);
-      border-top: 1px solid rgba(219, 227, 239, 0.95);
-    }
+.quick-btn.active {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
 
-    .tabs-inner {
-      max-width: 760px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-    }
+.effort-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
 
-    .tab-btn {
-      border: 0;
-      border-radius: 18px;
-      background: #f1f5f9;
-      color: #475569;
-      min-height: 58px;
-      font-weight: 950;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-    }
+.effort-btn {
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  color: var(--ink);
+  border-radius: 14px;
+  min-height: 48px;
+  font-weight: 900;
+}
 
-    .tab-btn span:first-child {
-      font-size: 21px;
-      line-height: 1;
-    }
+.effort-btn.active {
+  background: var(--orange);
+  color: white;
+  border-color: var(--orange);
+}
 
-    .tab-btn span:last-child {
-      font-size: 12px;
-    }
+.score-card {
+  background: linear-gradient(145deg,#dbeafe,#eff6ff);
+  border: 1px solid #bfdbfe;
+  border-radius: 18px;
+  padding: 16px;
+  text-align: center;
+}
 
-    .tab-btn.active {
-      background: linear-gradient(145deg, #2563eb, #1d4ed8);
-      color: white;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
-    }
+.score-card-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1e40af;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
 
-    .toast {
-      position: fixed;
-      left: 16px;
-      right: 16px;
-      bottom: calc(96px + var(--safe-bottom));
-      z-index: 2000;
-      max-width: 720px;
-      margin: 0 auto;
-      background: #0f172a;
-      color: white;
-      border-radius: 16px;
-      padding: 13px 15px;
-      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.28);
-      font-weight: 800;
-      display: none;
-    }
+.score-card-value {
+  font-size: 34px;
+  font-weight: 950;
+  margin-top: 4px;
+}
 
-    .toast.show {
-      display: block;
-      animation: toastIn 0.18s ease;
-    }
+.mini-hero-card {
+  border-radius: 20px;
+  padding: 16px;
+  background: white;
+  border: 1px solid var(--line);
+  margin-bottom: 16px;
+}
 
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.quest-card {
+  background: linear-gradient(145deg,#102a43,#1e3a8a);
+  color: white;
+}
 
-    .empty-state {
-      text-align: center;
-      padding: 22px 10px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
+.quest-card .subtle,
+.quest-card .activity-meta,
+.quest-card #questActivitiesText,
+.quest-card #questMinutesText,
+.quest-card #questRunText {
+  color: rgba(255,255,255,.92);
+}
 
-    .danger-zone {
-      border-color: #fecaca;
-      background: #fff7f7;
-    }
+.quest-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.quest-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,.6);
+}
+
+.quest-reward {
+  margin-top: 14px;
+  font-weight: 900;
+  color: #facc15;
+}
+
+.quest-complete {
+  color: #22c55e;
+}
+
+.bottom-tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  padding: 10px 14px calc(10px + var(--safe-bottom));
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(219, 227, 239, 0.95);
+}
+
+.tabs-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.tab-btn {
+  border: 0;
+  border-radius: 18px;
+  background: #f1f5f9;
+  color: #475569;
+  min-height: 58px;
+  font-weight: 950;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.tab-btn span:first-child {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.tab-btn span:last-child {
+  font-size: 12px;
+}
+
+.tab-btn.active {
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+}
+
+.toast {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(96px + var(--safe-bottom));
+  z-index: 2000;
+  max-width: 720px;
+  margin: 0 auto;
+  background: #0f172a;
+  color: white;
+  border-radius: 16px;
+  padding: 13px 15px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.28);
+  font-weight: 800;
+  display: none;
+}
+
+.toast.show {
+  display: block;
+  animation: toastIn 0.18s ease;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 22px 10px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.danger-zone {
+  border-color: #fecaca;
+  background: #fff7f7;
+}
 
     .file-input {
       background: white;
@@ -1208,7 +1272,7 @@
           <div class="progress-wrap">
             <div class="progress-label">
               <span>Points</span>
-              <span id="goalPointsText">0 / 400</span>
+              <span id="goalPointsText">0 / 500</span>
             </div>
             <div class="progress-track">
               <div id="goalPointsFill" class="progress-fill"></div>
@@ -1369,6 +1433,22 @@
         </div>
     </div>
 </div>
+
+<!-- =========================================
+     CELEBRATION OVERLAY
+========================================= -->
+<div id="celebrationOverlay" class="celebration-overlay">
+  <div class="celebration-card">
+    <div id="celebrationIcon" class="celebration-icon">🏆</div>
+    <div id="celebrationTitle" class="celebration-title">
+      Achievement Unlocked!
+    </div>
+    <div id="celebrationText" class="celebration-text">
+      Great Job!
+    </div>
+  </div>
+</div>
+
 
     <div id="toast" class="toast"></div>
 

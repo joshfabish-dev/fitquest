@@ -315,7 +315,7 @@
       appearance: none;
       -webkit-appearance: none;
     }
-    
+
     input:focus,
     select:focus,
     textarea:focus {
@@ -710,6 +710,112 @@
       font-weight: 700;
     }
 
+    .quick-button-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .quick-btn {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink);
+      border-radius: 14px;
+      min-height: 44px;
+      font-weight: 900;
+    }
+
+    .quick-btn.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .effort-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .effort-btn {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink);
+      border-radius: 14px;
+      min-height: 48px;
+      font-weight: 900;
+    }
+
+    .effort-btn.active {
+      background: var(--orange);
+      color: white;
+      border-color: var(--orange);
+    }
+
+    .score-card {
+      background: linear-gradient(145deg,#dbeafe,#eff6ff);
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .score-card-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1e40af;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .score-card-value {
+      font-size: 34px;
+      font-weight: 950;
+      margin-top: 4px;
+    }
+
+    .mini-hero-card {
+      border-radius: 20px;
+      padding: 16px;
+      background: white;
+      border: 1px solid var(--line);
+      margin-bottom: 16px;
+    }
+
+    .quest-card {
+      background: linear-gradient(145deg,#102a43,#1e3a8a);
+      color: white;
+    }
+
+    .quest-card .subtle,
+    .quest-card .activity-meta,
+    .quest-card #questActivitiesText,
+    .quest-card #questMinutesText,
+    .quest-card #questRunText {
+      color: rgba(255,255,255,.92);
+    }
+
+    .quest-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .quest-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid rgba(255,255,255,.6);
+    }
+
+    .quest-reward {
+      margin-top: 14px;
+      font-weight: 900;
+      color: #facc15;
+    }
+
     .bottom-tabs {
       position: fixed;
       left: 0;
@@ -852,6 +958,47 @@
             </div>
         </div>
 
+        <div class="mini-hero-card">
+          <div class="subtle">Last Activity</div>
+          <div id="lastActivityTitle" class="activity-name">
+            No activity yet
+          </div>
+          <div id="lastActivityMeta" class="activity-meta">
+            Log your first workout
+          </div>
+        </div>
+
+        <div class="mini-hero-card quest-card">
+          <div style="font-weight:900;font-size:18px;">
+            Quest of the Week
+          </div>
+
+          <div class="quest-item">
+            <div class="quest-check"></div>
+            <div id="questActivitiesText">
+              Complete 3 Activities
+            </div>
+          </div>
+
+          <div class="quest-item">
+            <div class="quest-check"></div>
+            <div id="questMinutesText">
+              Train 120 Minutes
+            </div>
+          </div>
+
+          <div class="quest-item">
+            <div class="quest-check"></div>
+            <div id="questRunText">
+              Complete 1 Running Session
+            </div>
+          </div>
+
+          <div class="quest-reward">
+            Reward: +100 XP
+          </div>
+        </div>
+
         <div class="card">
           <h2 class="section-title">Log an Activity</h2>
 
@@ -877,6 +1024,12 @@
             <div>
               <label for="duration">Duration, minutes</label>
               <input id="duration" type="number" inputmode="numeric" min="1" placeholder="30" />
+              <div class="quick-button-row">
+                <button type="button" class="quick-btn" data-minutes="15">15</button>
+                <button type="button" class="quick-btn" data-minutes="30">30</button>
+                <button type="button" class="quick-btn" data-minutes="45">45</button>
+                <button type="button" class="quick-btn" data-minutes="60">60</button>
+              </div>
             </div>
 
             <div>
@@ -891,8 +1044,17 @@
 
           <div class="grid two" style="margin-top: 12px;">
             <div>
-              <label for="effort">Effort Score, 1-5</label>
-              <select id="effort">
+             <label>Effort Score</label>
+
+            <div class="effort-buttons">
+              <button type="button" class="effort-btn" data-effort="1">1</button>
+              <button type="button" class="effort-btn" data-effort="2">2</button>
+              <button type="button" class="effort-btn active" data-effort="3">3</button>
+              <button type="button" class="effort-btn" data-effort="4">4</button>
+              <button type="button" class="effort-btn" data-effort="5">5</button>
+            </div>
+
+            <select id="effort" class="hidden">
                 <option value="1">1 - Low</option>
                 <option value="2">2 - Steady</option>
                 <option value="3" selected>3 - Good</option>
@@ -970,8 +1132,13 @@
             <textarea id="notes" placeholder="How did it feel? What did you work on?"></textarea>
           </div>
 
-          <div class="inline-note" style="margin-top: 12px;">
-            Estimated score: <span id="estimatedPoints">0</span> points
+          <div class="score-card" style="margin-top:12px;">
+            <div class="score-card-label">
+              Estimated Reward
+            </div>
+            <div class="score-card-value">
+              <span id="estimatedPoints">0</span> XP
+            </div>
           </div>
 
           <div class="button-row" style="margin-top: 14px;">
@@ -1007,7 +1174,7 @@
           <h2 class="section-title">Stats</h2>
           <div class="stat-grid">
             <div class="stat-box">
-              <div class="stat-value" id="statActivities">0</div>
+              <div class="stat-label">Training Days</div>
               <div class="stat-label">Activities</div>
             </div>
             <div class="stat-box">

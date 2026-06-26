@@ -519,6 +519,38 @@ function bindEvents() {
     updateEstimatedPoints();
   });
 
+  document.querySelectorAll(".quick-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const minutes = button.dataset.minutes;
+
+      document.getElementById("duration").value = minutes;
+
+      document.querySelectorAll(".quick-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      updateEstimatedPoints();
+    });
+  });
+
+  document.querySelectorAll(".effort-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const effort = button.dataset.effort;
+
+      document.getElementById("effort").value = effort;
+
+      document.querySelectorAll(".effort-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      updateEstimatedPoints();
+    });
+  });
+
   [
     "duration",
     "intensity",
@@ -708,8 +740,23 @@ function clearForm(showMessage) {
 
   document.getElementById("activityType").value = "Home Workout";
   document.getElementById("duration").value = "";
+  document.querySelectorAll(".quick-btn").forEach(btn => {
+      btn.classList.remove("active");
+    });
   document.getElementById("intensity").value = "Moderate";
   document.getElementById("effort").value = "3";
+  document.querySelectorAll(".effort-btn").forEach(btn => {
+  btn.classList.remove("active");
+      });
+
+  const defaultEffort = document.querySelector('.effort-btn[data-effort="3"]');
+
+  if (defaultEffort) {
+  defaultEffort.classList.add("active");
+  }
+
+
+
   document.getElementById("distanceMiles").value = "";
   document.getElementById("routeType").value = "Neighborhood";
   document.getElementById("ballTouches").value = "";
@@ -952,6 +999,7 @@ function renderAll() {
   renderProfileSelect();
   renderHeader();
   renderHero();
+  renderLastActivity();
   renderRecentActivities();
   renderStats();
   renderAchievements();
@@ -997,6 +1045,39 @@ function renderHero() {
     nextLevelText.textContent = `Next: Level ${levelInfo.nextLevel}`;
     progressFill.style.width = `${levelInfo.percent}%`;
   }
+}
+
+function renderLastActivity() {
+  const profile = getActiveProfile();
+
+  const title = document.getElementById("lastActivityTitle");
+  const meta = document.getElementById("lastActivityMeta");
+
+  if (!title || !meta) return;
+
+  const activities = [...profile.activities]
+    .sort((a, b) => {
+      const dateCompare = new Date(b.date) - new Date(a.date);
+
+      if (dateCompare !== 0) {
+        return dateCompare;
+      }
+
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    });
+
+  const latest = activities[0];
+
+  if (!latest) {
+    title.textContent = "No activity yet";
+    meta.textContent = "Log your first workout";
+    return;
+  }
+
+  title.textContent = latest.type;
+
+  meta.textContent =
+    `${latest.points} pts • ${latest.duration} min • ${formatReadableDate(latest.date)}`;
 }
 
 function renderRecentActivities() {
@@ -1064,7 +1145,7 @@ function renderStats() {
 
   document.getElementById("totalPoints").textContent = stats.totalPoints;
   document.getElementById("levelSummary").textContent = `Level ${levelInfo.level} Athlete`;
-  document.getElementById("statActivities").textContent = stats.totalActivities;
+  document.getElementById("statActivities").textContent = stats.totalTrainingDays;
   document.getElementById("statMinutes").textContent = stats.totalMinutes;
   document.getElementById("statMiles").textContent = roundOne(stats.totalMiles);
   document.getElementById("statTouches").textContent = stats.totalTouches;

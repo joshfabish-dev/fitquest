@@ -1,4 +1,4 @@
-const CACHE_NAME = "fitquest-cache-v5";
+const CACHE_NAME = "fitquest-cache-v6";
 
 const FILES_TO_CACHE = [
   "./",

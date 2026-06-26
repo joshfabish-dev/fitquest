@@ -681,9 +681,26 @@ function renderExerciseList() {
   }).join("");
 }
 
+/* ======================================================
+   LEVEL UP CELEBRATION SYSTEM
+
+   Purpose:
+   - Detect when an athlete gains a level
+   - Trigger milestone celebrations
+   - Reuse Celebration Overlay
+
+====================================================== */
 function saveActivity() {
   const profile = getActiveProfile();
   const unlockedBefore = new Set(getUnlockedAchievementIds(profile));
+
+  /* ------------------------------------------------------
+    Capture level before new activity is added
+  ------------------------------------------------------ */
+  const previousLevel =
+    calculateLevel(
+      calculateStats(profile).totalPoints
+    );
 
   const date = document.getElementById("activityDate").value;
   const type = document.getElementById("activityType").value;
@@ -770,6 +787,45 @@ function saveActivity() {
 
     saveState();
 
+    /* ------------------------------------------------------
+      Level after save.
+      Used by:
+      - Level Up Celebration
+      - Achievement Popup Suppression
+    ------------------------------------------------------ */
+    let levelUpOccurred = false;
+    const newLevel =
+      calculateLevel(
+        calculateStats(profile).totalPoints
+      );
+    
+    /* ------------------------------------------------------
+      Level Up Celebration
+    ------------------------------------------------------ */
+
+    if (newLevel > previousLevel) {
+
+      let icon = "⭐";
+      let title = `Level ${newLevel}!`;
+      let text =`${previousLevel} → ${newLevel}`;
+      levelUpOccurred = true;
+
+      // Major milestone levels
+      if ([5, 10, 25, 50].includes(newLevel)) {
+
+        icon = "🏅";
+
+        title = `Level ${newLevel} Athlete`;
+
+        text = `Major milestone reached!`;
+      }
+
+      showCelebration(
+        icon,
+        title,
+        text
+      );
+    }
 
   const unlockedAfter = getUnlockedAchievements(profile);
   const newlyUnlocked = unlockedAfter.filter(achievement => !unlockedBefore.has(achievement.id));
@@ -783,8 +839,17 @@ function saveActivity() {
     );
   }
 
-  if (newlyUnlocked.length) {
-    showAchievementPopup(newlyUnlocked[0], newlyUnlocked.length);
+  
+  if (newlyUnlocked.length && !levelUpOccurred) {
+
+    if (
+      ![5, 10, 25, 50].includes(newLevel)
+    ) {
+      showAchievementPopup(
+        newlyUnlocked[0],
+        newlyUnlocked.length
+      );
+    }
   }
 }
 
